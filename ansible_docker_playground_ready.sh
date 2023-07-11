@@ -3,6 +3,7 @@ docker run -it -d mmumshad/ubuntu-ssh-enabled ;docker run -it -d mmumshad/ubuntu
 
 echo "2) Installing Ansible"
 pip install ansible 
+
 echo "3) Creating inventory.txt" 
 y=1
 for x in `docker ps | awk '{print $1}' | grep -v CONTAINER` 
@@ -11,8 +12,15 @@ ip=`docker inspect $x | grep -i IPAddress | grep -v Sec| cut -f2 -d':' | uniq | 
 echo "target$y ansible_host=$ip ansible_ssh_pass=Passw0rd" >> inventory.txt
 y=`echo $y+1 | bc `
 done
-
-
 cat inventory.txt 
-echo "3) Adding sshpass package"
+
+echo "4) Adding sshpass package"
 apk add sshpass
+
+echo "5) ping targets"
+
+ansible target1 -m ping -i inventory.txt 
+ansible target2 -m ping -i inventory.txt 
+ansible target3 -m ping -i inventory.txt 
+
+
