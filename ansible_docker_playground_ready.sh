@@ -14,3 +14,5 @@ done
 
 
 cat inventory.txt 
+echo "3) Adding sshpass package"
+apk add sshpass
